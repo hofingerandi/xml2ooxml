@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<externalized>
+  <fbd xmlns="http://www.plcopen.org/xml/tc6_0200">
+    <scaling x="1" y="1" />
+  </fbd>
+  <ld xmlns="http://www.plcopen.org/xml/tc6_0200">
+    <scaling x="1" y="1" />
+  </ld>
+  <sfc xmlns="http://www.plcopen.org/xml/tc6_0200">
+    <scaling x="1" y="1" />
+  </sfc>
+</externalized>
