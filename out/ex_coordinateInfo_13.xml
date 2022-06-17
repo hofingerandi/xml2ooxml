@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<externalized>
+<externalized_coordinateInfo>
   <fbd xmlns="http://www.plcopen.org/xml/tc6_0200">
     <scaling x="1" y="1" />
   </fbd>
@@ -9,4 +9,4 @@
   <sfc xmlns="http://www.plcopen.org/xml/tc6_0200">
     <scaling x="1" y="1" />
   </sfc>
-</externalized>
+</externalized_coordinateInfo>

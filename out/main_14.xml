@@ -2,7 +2,7 @@
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
   <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP17 Patch 2" creationDateTime="2022-02-17T09:26:16.669529" />
   <contentHeader name="VisuTest.project" modificationDateTime="2022-02-16T16:05:59.7420926">
-    <coordinateInfo externalized="true" />
+    <coordinateInfo externalized="true" stored="C:\development\github\xml2ooxml\out\ex_coordinateInfo_13.xml" />
     <addData>
       <data name="http://www.3s-software.com/plcopenxml/projectinformation" handleUnknown="implementation">
         <ProjectInformation />
@@ -77,78 +77,10 @@
               </dataType>
             </data>
             <data name="http://www.3s-software.com/plcopenxml/pou" handleUnknown="implementation">
-              <pou name="PLC_PRG" pouType="program">
-                <interface>
-                  <localVars>
-                    <variable name="Counter">
-                      <type>
-                        <INT />
-                      </type>
-                    </variable>
-                    <variable name="ButtonPressed">
-                      <type>
-                        <BOOL />
-                      </type>
-                    </variable>
-                    <variable name="ButtonTrigger">
-                      <type>
-                        <derived name="R_TRIG" />
-                      </type>
-                    </variable>
-                    <variable name="ResetPressed">
-                      <type>
-                        <BOOL />
-                      </type>
-                    </variable>
-                    <variable name="ResetTrigger">
-                      <type>
-                        <derived name="R_TRIG" />
-                      </type>
-                    </variable>
-                  </localVars>
-                </interface>
-                <body>
-                  <ST>
-                    <xhtml xmlns="http://www.w3.org/1999/xhtml">ButtonTrigger(CLK:= ButtonPressed, Q=&gt; );
-IF (ButtonTrigger.Q) THEN
-	Counter := Counter + 1;
-END_IF
-
-ResetTrigger(CLK:= ResetPressed, Q=&gt; );
-IF (ResetTrigger.Q) THEN
-	Counter := 0;
-END_IF</xhtml>
-                  </ST>
-                </body>
-                <addData>
-                  <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
-                    <ObjectId>e110c2b7-37eb-4544-8236-1e7504c992cb</ObjectId>
-                  </data>
-                </addData>
-              </pou>
+              <pou name="PLC_PRG" pouType="program" externalized="true" stored="C:\development\github\xml2ooxml\out\ex_pou_12.xml" />
             </data>
             <data name="http://www.3s-software.com/plcopenxml/pou" handleUnknown="implementation">
-              <pou name="POU" pouType="functionBlock">
-                <interface>
-                  <localVars>
-                    <variable name="x">
-                      <type>
-                        <INT />
-                      </type>
-                    </variable>
-                  </localVars>
-                </interface>
-                <body>
-                  <ST>
-                    <xhtml xmlns="http://www.w3.org/1999/xhtml">x := x + 2;</xhtml>
-                  </ST>
-                </body>
-                <addData>
-                  <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
-                    <ObjectId>1becbc49-35a1-477b-9514-0fbb05067cfa</ObjectId>
-                  </data>
-                </addData>
-              </pou>
+              <pou name="POU" pouType="functionBlock" externalized="true" stored="C:\development\github\xml2ooxml\out\ex_pou_11.xml" />
             </data>
             <data name="http://www.3s-software.com/plcopenxml/libraries" handleUnknown="implementation">
               <Libraries>

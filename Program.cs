@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Xml.Linq;
 
 namespace ConsoleApp1
@@ -14,9 +15,9 @@ namespace ConsoleApp1
 
             var converter = new Xml2OoXmlConverter();
             converter.RegisterType("coordinateInfo", 2);
-            converter.ParseRecursively(doc.Root, 0);
-
-            doc.Save(@"C:\development\github\xml2ooxml\out_main.xml");
+            converter.RegisterType("pou", 7);
+            DirectoryInfo targetFolder = new DirectoryInfo(@"C:\development\github\xml2ooxml\out");
+            converter.ConvertDocument(doc, targetFolder);
         }
     }
 }

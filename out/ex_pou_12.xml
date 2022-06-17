@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<externalized_pou>
+  <interface xmlns="http://www.plcopen.org/xml/tc6_0200">
+    <localVars>
+      <variable name="Counter">
+        <type>
+          <INT />
+        </type>
+      </variable>
+      <variable name="ButtonPressed">
+        <type>
+          <BOOL />
+        </type>
+      </variable>
+      <variable name="ButtonTrigger">
+        <type>
+          <derived name="R_TRIG" />
+        </type>
+      </variable>
+      <variable name="ResetPressed">
+        <type>
+          <BOOL />
+        </type>
+      </variable>
+      <variable name="ResetTrigger">
+        <type>
+          <derived name="R_TRIG" />
+        </type>
+      </variable>
+    </localVars>
+  </interface>
+  <body xmlns="http://www.plcopen.org/xml/tc6_0200">
+    <ST>
+      <xhtml xmlns="http://www.w3.org/1999/xhtml">ButtonTrigger(CLK:= ButtonPressed, Q=&gt; );
+IF (ButtonTrigger.Q) THEN
+	Counter := Counter + 1;
+END_IF
+
+ResetTrigger(CLK:= ResetPressed, Q=&gt; );
+IF (ResetTrigger.Q) THEN
+	Counter := 0;
+END_IF</xhtml>
+    </ST>
+  </body>
+  <addData xmlns="http://www.plcopen.org/xml/tc6_0200">
+    <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+      <ObjectId>e110c2b7-37eb-4544-8236-1e7504c992cb</ObjectId>
+    </data>
+  </addData>
+</externalized_pou>
