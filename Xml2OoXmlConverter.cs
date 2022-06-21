@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Xml.Linq;
 using System.Linq;
 using System.IO;
+using System.Xml.XPath;
+using System.Xml;
 
 namespace ConsoleApp1
 {
@@ -17,23 +19,43 @@ namespace ConsoleApp1
 
     class Xml2OoXmlConverter
     {
-        List<Tuple<string, int>> _registry = new();
+        int MaxDepth = 8;
+        List<string> _xpaths = new();
+        List<XElement> _xpathElements = new();
         List<DocToParse> _docsToParse = new();
         List<DocToParse> _docsToStore = new();
 
+        public void RegisterNamespace(string prefix, string xmlNamespace)
+        {
+            _namespaceManager.AddNamespace(prefix, xmlNamespace);
+        }
+
+        XmlNamespaceManager _namespaceManager = new XmlNamespaceManager(new NameTable());
+
+        public void RegisterTypeForExternalization(string xpath)
+        {
+            _xpaths.Add(xpath);
+        }
+
         public void ConvertDocument(XDocument doc, DirectoryInfo targetFolder)
         {
+            FindElementsFromXPath(doc);
+
+            // During parsing, we create more and more documents that should be recursively split up
             _docsToParse.Add(new DocToParse() { Document = doc, Parsed = false });
             do
             {
+                // Continue, until we parse all sub-documents
                 var docToParse = _docsToParse.FirstOrDefault(d => !d.Parsed);
                 if (docToParse == null)
                     break;
+
                 ParseRecursively(docToParse, docToParse.Document.Root, 0);
                 _docsToStore.Add(docToParse);
                 docToParse.Parsed = true;
             }
             while (true);
+
             _docsToStore.Reverse();
             int i = 10;
             if (!targetFolder.Exists)
@@ -56,17 +78,24 @@ namespace ConsoleApp1
             }
         }
 
-        public void RegisterType(string localname, int depth)
+        private void FindElementsFromXPath(XDocument doc)
         {
-            _registry.Add(new Tuple<string, int>(localname, depth));
+            foreach (var xpath in _xpaths)
+            {
+                var elements = doc.XPathSelectElements(xpath, _namespaceManager);
+                _xpathElements.AddRange(elements);
+                if (elements.Count() == 0)
+                    Console.WriteLine($"No elements found that match '{xpath}'");
+            }
         }
+
 
         public void ParseRecursively(DocToParse docToParse, XElement element, int depth)
         {
-            if (depth > 8)
+            if (element == null)
                 return;
 
-            if (element == null)
+            if (depth > MaxDepth)
                 return;
 
             if (ShouldExternalize(element, depth))
@@ -102,7 +131,10 @@ namespace ConsoleApp1
             if (element == null)
                 return false;
 
-            return _registry.Find(t => t.Item1 == element?.Name?.LocalName && t.Item2 == depth) != null;
+            if (_xpathElements.Contains(element))
+                return true;
+
+            return false;
         }
     }
 }

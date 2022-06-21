@@ -9,16 +9,31 @@ namespace ConsoleApp1
     {
 
         static List<Tuple<string, int>> _registry = new List<Tuple<string, int>>();
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             var doc = XDocument.Load(@"C:\development\github\xml2ooxml\input.xml");
-
-            var converter = new Xml2OoXmlConverter();
-            converter.RegisterType("coordinateInfo", 2);
-            converter.RegisterType("pou", 7);
-            DirectoryInfo targetFolder = new DirectoryInfo(@"C:\development\github\xml2ooxml\out");
-            converter.ConvertDocument(doc, targetFolder);
+            try
+            {
+                var converter = new Xml2OoXmlConverter();
+                converter.RegisterNamespace("plc", "http://www.plcopen.org/xml/tc6_0200");
+                converter.RegisterTypeForExternalization("/plc:project/plc:contentHeader/plc:coordinateInfo");
+                converter.RegisterTypeForExternalization("//plc:data/plc:pou");
+                DirectoryInfo targetFolder = new DirectoryInfo(@"C:\development\github\xml2ooxml\out");
+                converter.ConvertDocument(doc, targetFolder);
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return 1;
+            }
         }
     }
 }
+
+/*
+var els1 = doc.XPathSelectElements("/*[name()='project']", nsmgr);
+var els2 = doc.XPathSelectElements("/plc:project", nsmgr);
+var els3 = doc.XPathSelectElements("/project", nsmgr);
+*/
 
