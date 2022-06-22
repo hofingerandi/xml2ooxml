@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<externalized_contentHeader>
+  <coordinateInfo externalized="true" stored="C:\development\github\xml2ooxml\out\ex_coordinateInfo_11.xml" xmlns="http://www.plcopen.org/xml/tc6_0200" />
+  <addData xmlns="http://www.plcopen.org/xml/tc6_0200">
+    <data name="http://www.3s-software.com/plcopenxml/projectinformation" handleUnknown="implementation">
+      <ProjectInformation />
+    </data>
+  </addData>
+</externalized_contentHeader>

@@ -16,9 +16,11 @@ namespace Xml2OoXml
             {
                 var converter = new Xml2OoXmlConverter();
                 converter.RegisterNamespace("plc", "http://www.plcopen.org/xml/tc6_0200");
+                converter.RegisterTypeForExternalization("/plc:project/plc:contentHeader");
                 converter.RegisterTypeForExternalization("/plc:project/plc:contentHeader/plc:coordinateInfo");
-                converter.RegisterTypeForExternalization("//plc:data/plc:pou");
-                converter.RegisterTypeForExternalization("//plc:coordinateInfo//plc:scaling");
+                converter.RegisterTypeForExternalization("/externalized_contentHeader/plc:coordinateInfo");
+                //converter.RegisterTypeForExternalization("//plc:data/plc:pou");
+                //converter.RegisterTypeForExternalization("//plc:coordinateInfo//plc:scaling");
                 DirectoryInfo targetFolder = new DirectoryInfo(@"C:\development\github\xml2ooxml\out");
                 converter.ConvertDocument(doc, targetFolder);
                 Console.WriteLine("Press any key to continue");

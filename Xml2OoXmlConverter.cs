@@ -13,6 +13,7 @@ namespace Xml2OoXml
     {
         int MaxDepth = 8;
         List<string> _xpaths = new();
+        HashSet<string> _usedXPaths = new();
         List<XElement> _xpathElements = new();
         List<DocToParse> _docsToParse = new();
         List<DocToParse> _docsToStore = new();
@@ -31,8 +32,6 @@ namespace Xml2OoXml
 
         public void ConvertDocument(XDocument doc, DirectoryInfo targetFolder)
         {
-            FindElementsFromXPath(doc);
-
             // During parsing, we create more and more documents that should be recursively split up
             _docsToParse.Add(new DocToParse() { Document = doc, Parsed = false });
             do
@@ -42,11 +41,14 @@ namespace Xml2OoXml
                 if (docToParse == null)
                     break;
 
+                FindElementsFromXPath(docToParse.Document);
                 ParseRecursively(docToParse, docToParse.Document.Root, 0);
                 _docsToStore.Add(docToParse);
                 docToParse.Parsed = true;
             }
             while (true);
+
+            LogUnusedXPaths();
 
             _docsToStore.Reverse();
             int i = 10;
@@ -70,14 +72,23 @@ namespace Xml2OoXml
             }
         }
 
+        private void LogUnusedXPaths()
+        {
+            foreach (var xpath in _xpaths)
+            {
+                if (!_usedXPaths.Contains(xpath))
+                    Console.WriteLine($"No elements found that match '{xpath}'");
+            }
+        }
+
         private void FindElementsFromXPath(XDocument doc)
         {
             foreach (var xpath in _xpaths)
             {
                 var elements = doc.XPathSelectElements(xpath, _namespaceManager);
                 _xpathElements.AddRange(elements);
-                if (elements.Count() == 0)
-                    Console.WriteLine($"No elements found that match '{xpath}'");
+                if (elements.Count() != 0)
+                    _usedXPaths.Add(xpath);
             }
         }
 
