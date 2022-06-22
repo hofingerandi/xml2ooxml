@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
 
-namespace ConsoleApp1
+namespace Xml2OoXml
 {
     internal class Program
     {
@@ -18,8 +18,11 @@ namespace ConsoleApp1
                 converter.RegisterNamespace("plc", "http://www.plcopen.org/xml/tc6_0200");
                 converter.RegisterTypeForExternalization("/plc:project/plc:contentHeader/plc:coordinateInfo");
                 converter.RegisterTypeForExternalization("//plc:data/plc:pou");
+                converter.RegisterTypeForExternalization("//plc:coordinateInfo//plc:scaling");
                 DirectoryInfo targetFolder = new DirectoryInfo(@"C:\development\github\xml2ooxml\out");
                 converter.ConvertDocument(doc, targetFolder);
+                Console.WriteLine("Press any key to continue");
+                Console.ReadKey();
                 return 0;
             }
             catch (Exception ex)
@@ -34,6 +37,7 @@ namespace ConsoleApp1
 /*
 var els1 = doc.XPathSelectElements("/*[name()='project']", nsmgr);
 var els2 = doc.XPathSelectElements("/plc:project", nsmgr);
-var els3 = doc.XPathSelectElements("/project", nsmgr);
+var els3 = doc.XPathSelectElements("/project", nsmgr);,
+//     "//plc:coordinateInfo//plc:scaling"
 */
 
