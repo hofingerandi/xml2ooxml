@@ -17,6 +17,8 @@ namespace Xml2OoXml
                 var converter = new Xml2OoXmlConverter();
                 // TODO: move this to some config file; supply via command line
                 converter.RegisterNamespace("plc", "http://www.plcopen.org/xml/tc6_0200");
+                converter.RegisterNamespace("xhtml", "http://www.w3.org/1999/xhtml");
+                converter.RegisterNameReplacement("http://www.3s-software.com/plcopenxml/", "plc_");
                 //converter.RegisterTypeForExternalization("/plc:project/plc:contentHeader");
                 //converter.RegisterTypeForExternalization("/plc:project/plc:contentHeader/plc:coordinateInfo");
                 //converter.RegisterTypeForExternalization("/externalized_contentHeader/plc:coordinateInfo");

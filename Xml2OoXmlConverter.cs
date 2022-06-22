@@ -17,6 +17,7 @@ namespace Xml2OoXml
         List<XElement> _xpathElements = new();
         List<DocToParse> _docsToParse = new();
         List<DocToParse> _docsToStore = new();
+        List<Tuple<string, string>> _nameReplacements = new();
 
         public void RegisterNamespace(string prefix, string xmlNamespace)
         {
@@ -24,6 +25,11 @@ namespace Xml2OoXml
         }
 
         XmlNamespaceManager _namespaceManager = new XmlNamespaceManager(new NameTable());
+
+        internal void RegisterNameReplacement(string replace, string with)
+        {
+            _nameReplacements.Add(Tuple.Create(replace, with));
+        }
 
         public void RegisterTypeForExternalization(string xpath)
         {
@@ -176,7 +182,12 @@ namespace Xml2OoXml
             string result;
             if (nameAttr != null)
             {
-                result = xElement.Name.LocalName + "_" + nameAttr.Value;
+                var nameValue = nameAttr.Value;
+                foreach (var item in _nameReplacements)
+                {
+                    nameValue = nameValue.Replace(item.Item1, item.Item2);
+                }
+                result = xElement.Name.LocalName + "_" + nameValue;
             }
             else
             {
