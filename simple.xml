@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+	<datatypes>
+		<pou name="hugo">
+			<interface>
+			</interface>
+			<implementation>
+				<sourcecode>
+					<header>
+						#include &lt;iostream&gt;
+					</header>
+				</sourcecode>
+			</implementation>
+		</pou>
+		<pou name="bert/bart">
+			<interface>
+			</interface>
+			<implementation>
+			</implementation>
+		</pou>
+		<pou name="dupli">
+			<interface>
+			</interface>
+			<implementation>
+			</implementation>
+		</pou>
+		<pou name="dupli">
+			<interface>
+			</interface>
+			<implementation>
+			</implementation>
+		</pou>
+	</datatypes>
+	<instances>
+		<configurations>
+			<configuration name="Device">
+			</configuration>
+			<configuration name="Foo">
+			</configuration>
+		</configurations>
+	</instances>
+</project>

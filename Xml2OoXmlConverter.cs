@@ -50,26 +50,148 @@ namespace Xml2OoXml
 
             LogUnusedXPaths();
 
-            _docsToStore.Reverse();
-            int i = 10;
-            if (!targetFolder.Exists)
-                targetFolder.Create();
+            CreateFileAndFoldernames();
 
+            StoreLinksInParents();
+
+            CreateFolderStructure(targetFolder);
+
+            StoreFiles(targetFolder);
+
+            /*
+            i++;
+            string targetPath;
+            docToStore.ParentElement.SetAttributeValue("stored", targetPath);
+            targetPath = Path.Combine(targetFolder.FullName, $"ex_{docToStore.ParentElement.Name.LocalName}_{i}.xml");
+            targetPath = Path.Combine(targetFolder.FullName, $"main_{i}.xml");
+            */
+            //docToStore.Document.Save(targetPath);
+        }
+
+        private void StoreLinksInParents()
+        {
             foreach (var docToStore in _docsToStore)
             {
-                i++;
-                string targetPath;
+                docToStore.OrigElement?.SetAttributeValue("ext", docToStore.FullFilename);
+            }
+        }
+
+        private void CreateFileAndFoldernames()
+        {
+            CreateLocalNames();
+            ConvertLocalToGlobalNames();
+            MakeFilenamesUnique();
+        }
+
+        private void CreateLocalNames()
+        {
+            // in which folder should this doc be stored? which filename should it have
+            foreach (var docToStore in _docsToStore)
+            {
                 if (docToStore.ParentElement != null)
                 {
-                    targetPath = Path.Combine(targetFolder.FullName, $"ex_{docToStore.ParentElement.Name.LocalName}_{i}.xml");
-                    docToStore.ParentElement.SetAttributeValue("stored", targetPath);
+                    docToStore.LocalFolder = GetValidFilename(docToStore.ParentElement);
+                    docToStore.FileName = GetValidFilename(docToStore.Document.Root);
+                    Console.WriteLine($"Storage: {docToStore.LocalFolder}/{docToStore.FileName}");
                 }
                 else
                 {
-                    targetPath = Path.Combine(targetFolder.FullName, $"main_{i}.xml");
+                    Console.WriteLine($"Filename: {docToStore.Document.Root.Name.LocalName}");
+                    docToStore.FileName = GetValidFilename(docToStore.Document.Root);
                 }
-                docToStore.Document.Save(targetPath);
             }
+        }
+
+        // Check document hierarchy, and find the full folder structure
+        private void ConvertLocalToGlobalNames()
+        {
+            foreach (var docToStore in _docsToStore)
+            {
+                string folder = docToStore.LocalFolder;
+                var parent = docToStore;
+                while (parent.ParentDoc?.LocalFolder != null)
+                {
+                    folder = parent.ParentDoc.LocalFolder + "/" + folder;
+                    parent = parent.ParentDoc;
+                }
+                docToStore.FullFolder = folder;
+                Console.WriteLine($"{docToStore.FullFolder}/{docToStore.FileName}.xml");
+            }
+        }
+
+        private void MakeFilenamesUnique()
+        {
+            HashSet<string> knownPaths = new();
+            foreach (var docToStore in _docsToStore)
+            {
+                if (docToStore.ParentDoc == null)
+                {
+                    // main document is always unique
+                    docToStore.FullFilename = docToStore.FileName;
+                    continue;
+                }
+
+                var currentPath = Path.Combine(docToStore.FullFolder, docToStore.FileName);
+                var validPath = currentPath;
+                int i = 0;
+                while (knownPaths.Contains(validPath))
+                {
+                    validPath = currentPath + $"_{++i:D2}";
+                }
+                docToStore.FullFilename = validPath;
+                knownPaths.Add(validPath);
+                Console.WriteLine(validPath);
+            }
+        }
+
+        private void CreateFolderStructure(DirectoryInfo targetFolder)
+        {
+            if (!targetFolder.Exists)
+                targetFolder.Create();
+
+            foreach (var doc in _docsToStore)
+            {
+                if (doc.FullFolder == null)
+                    continue;
+
+                var folder = Path.Combine(targetFolder.FullName, doc.FullFolder);
+                if (!Directory.Exists(folder))
+                    Directory.CreateDirectory(folder);
+            }
+        }
+
+        private void StoreFiles(DirectoryInfo targetFolder)
+        {
+            foreach (var doc in _docsToStore)
+            {
+                var fullFilename = Path.Combine(targetFolder.FullName, doc.FullFilename + ".xml");
+                Console.WriteLine(fullFilename);
+                doc.Document.Save(fullFilename);
+            }
+        }
+
+        private string GetValidFilename(XElement xElement)
+        {
+            var nameAttr = xElement.Attribute("name");
+            string result;
+            if (nameAttr != null)
+            {
+                result = xElement.Name.LocalName + "_" + nameAttr.Value;
+            }
+            else
+            {
+                result = xElement.Name.LocalName;
+            }
+            return MakeValidFileName(result);
+        }
+
+        // https://stackoverflow.com/a/847251/821134
+        private static string MakeValidFileName(string name)
+        {
+            string invalidChars = System.Text.RegularExpressions.Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars()));
+            string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
+
+            return System.Text.RegularExpressions.Regex.Replace(name, invalidRegStr, "");
         }
 
         private void LogUnusedXPaths()
@@ -85,13 +207,12 @@ namespace Xml2OoXml
         {
             foreach (var xpath in _xpaths)
             {
-                var elements = doc.XPathSelectElements(xpath, _namespaceManager);
+                var elements = doc.XPathSelectElements(xpath, _namespaceManager).Where(el => el != doc.Root);
                 _xpathElements.AddRange(elements);
                 if (elements.Count() != 0)
                     _usedXPaths.Add(xpath);
             }
         }
-
 
         public void ParseRecursively(DocToParse docToParse, XElement element, int depth)
         {
@@ -107,7 +228,7 @@ namespace Xml2OoXml
                 return;
             }
 
-            Debug.WriteLine($"{new String('-', depth)}{element.Name.LocalName}");
+            //Debug.WriteLine($"{new String('-', depth)}{element.Name.LocalName}");
             foreach (var node in element.Elements())
             {
                 ParseRecursively(docToParse, node, depth + 1);
@@ -122,11 +243,11 @@ namespace Xml2OoXml
             // * start creating new documents in its subfolder
             // * for testing, store the files directly
             // * probably, no files must be store in between
-            var newDoc = new XDocument(new XElement($"externalized_{element.Name.LocalName}", element.Elements()));
+            var newDoc = new XDocument(new XElement(element)); //)$"{element.Name}", element.Elements()));
             //newDoc.Save(@"C:\development\github\xml2ooxml\out_sub.xml");
-            _docsToParse.Add(new DocToParse() { Document = newDoc, ParentDoc = docToParse, ParentElement = element });
+            _docsToParse.Add(new DocToParse() { Document = newDoc, OrigElement = element, ParentDoc = docToParse, ParentElement = element.Parent });
             element.RemoveNodes();
-            element.SetAttributeValue("externalized", true);
+            element.RemoveAttributes();
         }
 
         public bool ShouldExternalize(XElement element, int depth)

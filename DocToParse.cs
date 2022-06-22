@@ -8,6 +8,11 @@ namespace Xml2OoXml
         public bool Parsed { get; set; }
         public DocToParse ParentDoc { get; set; }
         public XElement ParentElement { get; set; }
+        public string LocalFolder { get; set; }
+        public string FullFolder { get; set; }
+        public string FileName { get; internal set; }
+        public string FullFilename { get; internal set; }
+        public XElement OrigElement { get; internal set; }
     }
 }
 

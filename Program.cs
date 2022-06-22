@@ -11,15 +11,18 @@ namespace Xml2OoXml
         static List<Tuple<string, int>> _registry = new List<Tuple<string, int>>();
         static int Main(string[] args)
         {
-            var doc = XDocument.Load(@"C:\development\github\xml2ooxml\input.xml");
+            var doc = XDocument.Load(@"C:\development\github\xml2ooxml\simple.xml");
             try
             {
                 var converter = new Xml2OoXmlConverter();
+                // TODO: move this to some config file; supply via command line
                 converter.RegisterNamespace("plc", "http://www.plcopen.org/xml/tc6_0200");
-                converter.RegisterTypeForExternalization("/plc:project/plc:contentHeader");
-                converter.RegisterTypeForExternalization("/plc:project/plc:contentHeader/plc:coordinateInfo");
-                converter.RegisterTypeForExternalization("/externalized_contentHeader/plc:coordinateInfo");
-                //converter.RegisterTypeForExternalization("//plc:data/plc:pou");
+                //converter.RegisterTypeForExternalization("/plc:project/plc:contentHeader");
+                //converter.RegisterTypeForExternalization("/plc:project/plc:contentHeader/plc:coordinateInfo");
+                //converter.RegisterTypeForExternalization("/externalized_contentHeader/plc:coordinateInfo");
+                converter.RegisterTypeForExternalization("//plc:pou");
+                converter.RegisterTypeForExternalization("//plc:configuration");
+                converter.RegisterTypeForExternalization("//plc:sourcecode");
                 //converter.RegisterTypeForExternalization("//plc:coordinateInfo//plc:scaling");
                 DirectoryInfo targetFolder = new DirectoryInfo(@"C:\development\github\xml2ooxml\out");
                 converter.ConvertDocument(doc, targetFolder);

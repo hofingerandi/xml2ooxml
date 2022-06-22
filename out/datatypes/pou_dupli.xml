@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pou name="dupli" xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <interface></interface>
+  <implementation></implementation>
+</pou>
