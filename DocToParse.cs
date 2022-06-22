@@ -1,7 +1,9 @@
-﻿using System.Xml.Linq;
+﻿using System.Diagnostics;
+using System.Xml.Linq;
 
 namespace Xml2OoXml
 {
+    [DebuggerDisplay("{Document.Root.Name.LocalName}")]
     class DocToParse
     {
         public XDocument Document { get; set; }

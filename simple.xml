@@ -7,7 +7,7 @@
 			<implementation>
 				<sourcecode>
 					<header>
-						#include &lt;iostream&gt;
+						#include &lt;hugo&gt;
 					</header>
 				</sourcecode>
 			</implementation>
@@ -16,6 +16,11 @@
 			<interface>
 			</interface>
 			<implementation>
+				<sourcecode>
+					<header>
+						#include &lt;bart&gt;
+					</header>
+				</sourcecode>
 			</implementation>
 		</pou>
 		<pou name="dupli">

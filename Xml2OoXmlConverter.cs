@@ -9,6 +9,15 @@ using System.Xml;
 
 namespace Xml2OoXml
 {
+
+    // TODO: always create 2 subfolders from local name + parent name
+    // datatypes/pou_dupli.xml
+    // datatypes/pou_dupli/implementation/sourcecode.xml
+    //
+    // TODO: store content of elements without attributes directly, not as xml?
+
+
+
     class Xml2OoXmlConverter
     {
         int MaxDepth = 8;
@@ -63,15 +72,6 @@ namespace Xml2OoXml
             CreateFolderStructure(targetFolder);
 
             StoreFiles(targetFolder);
-
-            /*
-            i++;
-            string targetPath;
-            docToStore.ParentElement.SetAttributeValue("stored", targetPath);
-            targetPath = Path.Combine(targetFolder.FullName, $"ex_{docToStore.ParentElement.Name.LocalName}_{i}.xml");
-            targetPath = Path.Combine(targetFolder.FullName, $"main_{i}.xml");
-            */
-            //docToStore.Document.Save(targetPath);
         }
 
         private void StoreLinksInParents()
