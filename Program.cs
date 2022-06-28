@@ -1,33 +1,56 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
+using Xml2Ooxml.CommandLine;
+using Xml2Ooxml.Config;
 
 namespace Xml2OoXml
 {
     internal class Program
     {
-
-        static List<Tuple<string, int>> _registry = new List<Tuple<string, int>>();
         static int Main(string[] args)
         {
-            var doc = XDocument.Load(@"C:\development\github\xml2ooxml\simple.xml");
+            var opts = ParseArgs(args);
+            if (opts != null)
+            {
+                return HandleOptions(opts);
+            }
+            else
+            {
+                Console.Error.WriteLine("Error parsing command line {0}", args);
+                Console.WriteLine("Options:");
+                Console.WriteLine("     --config <configFile.xml>");
+                Console.WriteLine("     --createsample <configFile.xml>");
+                return 1;
+            }
+        }
+
+        static int HandleOptions(Options opts)
+        {
+            if (!opts.Convert)
+                return 0;
+
+            var loader = new Xml2Ooxml.Config.ConfigLoader();
+            var config = loader.Load(opts.ConfigFile);
+
+            var doc = XDocument.Load(config.DocumentPath);
             try
             {
                 var converter = new Xml2OoXmlConverter();
-                // TODO: move this to some config file; supply via command line
-                converter.RegisterNamespace("plc", "http://www.plcopen.org/xml/tc6_0200");
-                converter.RegisterNamespace("xhtml", "http://www.w3.org/1999/xhtml");
-                converter.RegisterNameReplacement("http://www.3s-software.com/plcopenxml/", "plc_");
-                //converter.RegisterTypeForExternalization("/plc:project/plc:contentHeader");
-                //converter.RegisterTypeForExternalization("/plc:project/plc:contentHeader/plc:coordinateInfo");
-                //converter.RegisterTypeForExternalization("/externalized_contentHeader/plc:coordinateInfo");
-                converter.RegisterTypeForExternalization("//plc:pou");
-                converter.RegisterTypeForExternalization("//plc:configuration");
-                converter.RegisterTypeForExternalization("//plc:sourcecode");
-                converter.RegisterTypeForExternalization("//plc:include");
-                //converter.RegisterTypeForExternalization("//plc:coordinateInfo//plc:scaling");
-                DirectoryInfo targetFolder = new DirectoryInfo(@"C:\development\github\xml2ooxml\out");
+                foreach (var ns in config.NamespaceEntries)
+                {
+                    converter.RegisterNamespace(ns.Abbreviation, ns.Namespace);
+                }
+                foreach (var nr in config.NameReplacements)
+                {
+                    converter.RegisterNameReplacement(nr.FullName, nr.Abbreviation);
+                }
+                foreach (var xpath in config.XPathsToExternalize)
+                {
+                    converter.RegisterTypeForExternalization(xpath);
+                }
+
+                DirectoryInfo targetFolder = new DirectoryInfo(config.TargetFolder);
                 converter.ConvertDocument(doc, targetFolder);
                 Console.WriteLine("Press any key to continue");
                 Console.ReadKey();
@@ -39,13 +62,32 @@ namespace Xml2OoXml
                 return 1;
             }
         }
+
+        private static Options ParseArgs(string[] args)
+        {
+            if (args.Length < 2)
+                return null;
+
+            if (args[0] == "--config")
+            {
+
+                var configFile = args[1];
+                if (!File.Exists(configFile))
+                {
+                    Console.WriteLine($"File <{configFile}> not found");
+                    return null;
+                }
+                return new() { ConfigFile = configFile, Convert = true };
+            }
+            else if (args[0] == "--createsample")
+            {
+                ConfigLoader loader = new ConfigLoader();
+                loader.Save(Configuration.CreateDefault(), args[1]);
+                return new() { Convert = false };
+            }
+            return null;
+        }
     }
 }
 
-/*
-var els1 = doc.XPathSelectElements("/*[name()='project']", nsmgr);
-var els2 = doc.XPathSelectElements("/plc:project", nsmgr);
-var els3 = doc.XPathSelectElements("/project", nsmgr);,
-//     "//plc:coordinateInfo//plc:scaling"
-*/
 

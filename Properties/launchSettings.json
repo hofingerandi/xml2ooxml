@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "defective commandline": {
+      "commandName": "Project",
+      "commandLineArgs": "gsfg -3 lk l"
+    },
+    "generate config": {
+      "commandName": "Project",
+      "commandLineArgs": "--createsample test.xml"
+    },
+    "convert document": {
+      "commandName": "Project",
+      "commandLineArgs": "--config test.xml"
+    }
+  }
+}
