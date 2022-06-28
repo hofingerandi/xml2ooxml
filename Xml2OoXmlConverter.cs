@@ -9,15 +9,7 @@ using System.Xml;
 
 namespace Xml2OoXml
 {
-
-    // TODO: always create 2 subfolders from local name + parent name
-    // datatypes/pou_dupli.xml
-    // datatypes/pou_dupli/implementation/sourcecode.xml
-    //
     // TODO: store content of elements without attributes directly, not as xml?
-
-
-
     class Xml2OoXmlConverter
     {
         int MaxDepth = 8;
@@ -72,6 +64,8 @@ namespace Xml2OoXml
             CreateFolderStructure(targetFolder);
 
             StoreFiles(targetFolder);
+
+            Console.WriteLine($"{_docsToStore.Count} documents stored");
         }
 
         private void StoreLinksInParents()
@@ -204,7 +198,11 @@ namespace Xml2OoXml
             return MakeValidFileName(result);
         }
 
-        // https://stackoverflow.com/a/847251/821134
+        /// <summary>
+        /// https://stackoverflow.com/a/847251/821134
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         private static string MakeValidFileName(string name)
         {
             string invalidChars = System.Text.RegularExpressions.Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars()));
@@ -257,13 +255,9 @@ namespace Xml2OoXml
         private void Externalize(DocToParse docToParse, XElement element)
         {
             Debug.WriteLine($"Externalizing {element.Name.LocalName}");
-            // TODO
-            // * remember the folder, where the current doc is stored
-            // * start creating new documents in its subfolder
-            // * for testing, store the files directly
-            // * probably, no files must be store in between
-            var newDoc = new XDocument(new XElement(element)); //)$"{element.Name}", element.Elements()));
-            //newDoc.Save(@"C:\development\github\xml2ooxml\out_sub.xml");
+            // TODO: if this element has not attributes, and no subelements, just store the content (without xml-escaping)
+            // TODO: use different filename (.txt, .content vs. .xml)
+            var newDoc = new XDocument(new XElement(element));
             _docsToParse.Add(new DocToParse() { Document = newDoc, OrigElement = element, ParentDoc = docToParse, ParentElement = element.Parent });
             element.RemoveNodes();
             element.RemoveAttributes();
