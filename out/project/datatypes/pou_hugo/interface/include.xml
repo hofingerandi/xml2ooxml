@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<include xmlns="http://www.plcopen.org/xml/tc6_0200">
+					iostream;string;
+				</include>

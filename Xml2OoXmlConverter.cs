@@ -91,20 +91,28 @@ namespace Xml2OoXml
 
         private void CreateLocalNames()
         {
-            // in which folder should this doc be stored? which filename should it have
+            // which filename should this doc have
             foreach (var docToStore in _docsToStore)
             {
                 if (docToStore.ParentElement != null)
                 {
-                    docToStore.LocalFolder = GetValidFilename(docToStore.ParentElement);
+                    Debug.Assert(docToStore.ParentDoc != null);
                     docToStore.FileName = GetValidFilename(docToStore.Document.Root);
-                    Console.WriteLine($"Storage: {docToStore.LocalFolder}/{docToStore.FileName}");
                 }
                 else
                 {
-                    Console.WriteLine($"Filename: {docToStore.Document.Root.Name.LocalName}");
                     docToStore.FileName = GetValidFilename(docToStore.Document.Root);
+                    Console.WriteLine($"Filename: {docToStore.FileName}");
+
                 }
+            }
+
+            // in which folder should this doc be stored?
+            // may depend on filename of parent, so two separate loops
+            foreach (var docToStore in _docsToStore.Where(d => d.ParentElement != null))
+            {
+                docToStore.LocalFolder = docToStore.ParentDoc.FileName + "\\" + GetValidFilename(docToStore.ParentElement);
+                Console.WriteLine($"Storage: {docToStore.LocalFolder}/{docToStore.FileName}");
             }
         }
 

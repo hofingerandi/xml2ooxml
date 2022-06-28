@@ -25,6 +25,7 @@ namespace Xml2OoXml
                 converter.RegisterTypeForExternalization("//plc:pou");
                 converter.RegisterTypeForExternalization("//plc:configuration");
                 converter.RegisterTypeForExternalization("//plc:sourcecode");
+                converter.RegisterTypeForExternalization("//plc:include");
                 //converter.RegisterTypeForExternalization("//plc:coordinateInfo//plc:scaling");
                 DirectoryInfo targetFolder = new DirectoryInfo(@"C:\development\github\xml2ooxml\out");
                 converter.ConvertDocument(doc, targetFolder);

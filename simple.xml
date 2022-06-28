@@ -3,8 +3,11 @@
 	<datatypes>
 		<pou name="hugo">
 			<interface>
+				<include>
+					iostream;string;
+				</include>				
 			</interface>
-			<implementation>
+			<implementation>			
 				<sourcecode>
 					<header>
 						#include &lt;hugo&gt;

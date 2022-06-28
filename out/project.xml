@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
   <datatypes>
-    <pou externalized="true" ext="datatypes\pou_hugo" />
-    <pou externalized="true" ext="datatypes\pou_bertbart" />
-    <pou externalized="true" ext="datatypes\pou_dupli" />
-    <pou externalized="true" ext="datatypes\pou_dupli_01" />
+    <pou ext="project\datatypes\pou_hugo" />
+    <pou ext="project\datatypes\pou_bertbart" />
+    <pou ext="project\datatypes\pou_dupli" />
+    <pou ext="project\datatypes\pou_dupli_01" />
   </datatypes>
   <instances>
     <configurations>
-      <configuration externalized="true" ext="configurations\configuration_Device" />
-      <configuration externalized="true" ext="configurations\configuration_Foo" />
+      <configuration ext="project\configurations\configuration_Device" />
+      <configuration ext="project\configurations\configuration_Foo" />
     </configurations>
   </instances>
 </project>

@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <pou name="bert/bart" xmlns="http://www.plcopen.org/xml/tc6_0200">
   <interface></interface>
-  <implementation></implementation>
+  <implementation>
+    <sourcecode ext="project\datatypes/pou_bertbart\implementation\sourcecode" />
+  </implementation>
 </pou>

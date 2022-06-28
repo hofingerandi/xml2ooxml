@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pou name="hugo" xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <interface>
+    <include ext="project\datatypes/pou_hugo\interface\include" />
+  </interface>
+  <implementation>
+    <sourcecode ext="project\datatypes/pou_hugo\implementation\sourcecode" />
+  </implementation>
+</pou>
