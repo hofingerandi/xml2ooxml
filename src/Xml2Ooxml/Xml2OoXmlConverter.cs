@@ -112,7 +112,14 @@ namespace Xml2OoXml
             // may depend on filename of parent, so two separate loops
             foreach (var docToStore in _docsToStore.Where(d => d.ParentElement != null))
             {
-                docToStore.LocalFolder = docToStore.ParentDoc.FileName + "\\" + GetValidFilename(docToStore.ParentElement);
+                if (docToStore.ParentDoc?.Document?.Root == docToStore.ParentElement)
+                {
+                    docToStore.LocalFolder = docToStore.ParentDoc.FileName;
+                }
+                else
+                {
+                    docToStore.LocalFolder = docToStore.ParentDoc.FileName + "\\" + GetValidFilename(docToStore.ParentElement);
+                }
                 Console.WriteLine($"Storage: {docToStore.LocalFolder}/{docToStore.FileName}");
             }
         }
