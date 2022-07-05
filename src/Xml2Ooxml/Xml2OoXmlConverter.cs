@@ -118,7 +118,7 @@ namespace Xml2OoXml
                 }
                 else
                 {
-                    docToStore.LocalFolder = docToStore.ParentDoc.FileName + "\\" + GetValidFilename(docToStore.ParentElement);
+                    docToStore.LocalFolder = Path.Combine(docToStore.ParentDoc.FileName , GetValidFilename(docToStore.ParentElement));
                 }
                 Console.WriteLine($"Storage: {docToStore.LocalFolder}/{docToStore.FileName}");
             }
