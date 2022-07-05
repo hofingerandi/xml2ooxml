@@ -12,8 +12,10 @@ namespace Xml2Ooxml.Config
             NameReplacements = new();
             XPathsToExternalize = new();
             DocumentPath = "";
+            MaxDepth = 10;
         }
 
+        public int MaxDepth { get; set; }
         public string DocumentPath { get; set; }
         public string TargetFolder { get; set; }
         public List<XmlNamespaceEntry> NamespaceEntries { get; set; }

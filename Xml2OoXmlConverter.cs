@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Xml.Linq;
-using System.Linq;
 using System.IO;
-using System.Xml.XPath;
+using System.Linq;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace Xml2OoXml
 {
     // TODO: store content of elements without attributes directly, not as xml?
     class Xml2OoXmlConverter
     {
-        int MaxDepth = 8;
         List<string> _xpaths = new();
         HashSet<string> _usedXPaths = new();
         List<XElement> _xpathElements = new();
         List<DocToParse> _docsToParse = new();
         List<DocToParse> _docsToStore = new();
         List<Tuple<string, string>> _nameReplacements = new();
+
+        public int MaxDepth { get; set; }
 
         public void RegisterNamespace(string prefix, string xmlNamespace)
         {

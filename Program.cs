@@ -51,6 +51,7 @@ namespace Xml2OoXml
                 }
 
                 DirectoryInfo targetFolder = new DirectoryInfo(config.TargetFolder);
+                converter.MaxDepth = config.MaxDepth;
                 converter.ConvertDocument(doc, targetFolder);
                 Console.WriteLine("Press any key to continue");
                 Console.ReadKey();
