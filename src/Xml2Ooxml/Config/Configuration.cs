@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Xml2Ooxml.Config
@@ -21,7 +22,7 @@ namespace Xml2Ooxml.Config
         public List<XmlNamespaceEntry> NamespaceEntries { get; set; }
         public List<NameReplacement> NameReplacements { get; set; }
         [XmlArrayItem("XPath")]
-        public List<string> XPathsToExternalize { get; set; }
+        public List<XPathEntry> XPathsToExternalize { get; set; }
 
         internal static Configuration CreateDefault()
         {
@@ -40,10 +41,10 @@ namespace Xml2Ooxml.Config
                 },
                 XPathsToExternalize = new()
                 {
-                    "//plc:pou",
-                    "//plc:configuration",
-                    "//plc:sourcecode",
-                    "//plc:include",
+                   new("//plc:pou" ),
+                   new("//plc:configuration" ),
+                   new("//plc:sourcecode" ),
+                   new("//plc:include" , "../../@name"),
                 }
             };
         }
@@ -76,5 +77,27 @@ var els3 = doc.XPathSelectElements("/project", nsmgr);,
             [XmlAttribute]
             public string Abbreviation { get; set; }
         }
+
+
+    }
+
+    [XmlRoot]
+    public class XPathEntry
+    {
+        [Obsolete("For Xml-Serialization only", true)]
+        public XPathEntry()
+        {
+        }
+
+        public XPathEntry(string value, string selector = null)
+        {
+            Value = value;
+            Selector = selector;
+        }
+
+        [XmlAttribute("selector")]
+        public string Selector { get; set; }
+        [XmlText]
+        public string Value { get; set; }
     }
 }

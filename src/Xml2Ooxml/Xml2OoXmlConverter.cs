@@ -6,17 +6,19 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Xml2Ooxml.Config;
 
 namespace Xml2OoXml
 {
     class Xml2OoXmlConverter
     {
-        List<string> _xpaths = new();
+        List<XPathEntry> _xpaths = new();
         HashSet<string> _usedXPaths = new();
         List<XElement> _xpathElements = new();
         List<DocToParse> _docsToParse = new();
         List<DocToParse> _docsToStore = new();
         List<Tuple<string, string>> _nameReplacements = new();
+        Dictionary<XElement, string> _specialNames = new();
 
         public int MaxDepth { get; set; }
 
@@ -32,7 +34,7 @@ namespace Xml2OoXml
             _nameReplacements.Add(Tuple.Create(replace, with));
         }
 
-        public void RegisterTypeForExternalization(string xpath)
+        public void RegisterTypeForExternalization(XPathEntry xpath)
         {
             _xpaths.Add(xpath);
         }
@@ -118,7 +120,7 @@ namespace Xml2OoXml
                 }
                 else
                 {
-                    docToStore.LocalFolder = Path.Combine(docToStore.ParentDoc.FileName , GetValidFilename(docToStore.ParentElement));
+                    docToStore.LocalFolder = Path.Combine(docToStore.ParentDoc.FileName, GetValidFilename(docToStore.ParentElement));
                 }
                 Console.WriteLine($"Storage: {docToStore.LocalFolder}/{docToStore.FileName}");
             }
@@ -202,16 +204,24 @@ namespace Xml2OoXml
 
         private string GetValidFilename(XElement xElement)
         {
-            var nameAttr = xElement.Attribute("name");
             string result;
-            if (nameAttr != null)
+            string specialName = null;
+            if (_specialNames.TryGetValue(xElement, out specialName))
             {
-                var nameValue = nameAttr.Value;
+            }
+            else
+            {
+                var nameAttr = xElement.Attribute("name");
+                specialName = nameAttr?.Value;
+            }
+
+            if (!String.IsNullOrEmpty(specialName))
+            {
                 foreach (var item in _nameReplacements)
                 {
-                    nameValue = nameValue.Replace(item.Item1, item.Item2);
+                    specialName = specialName.Replace(item.Item1, item.Item2);
                 }
-                result = xElement.Name.LocalName + "_" + nameValue;
+                result = xElement.Name.LocalName + "_" + specialName;
             }
             else
             {
@@ -237,7 +247,7 @@ namespace Xml2OoXml
         {
             foreach (var xpath in _xpaths)
             {
-                if (!_usedXPaths.Contains(xpath))
+                if (!_usedXPaths.Contains(xpath.Value))
                     Console.WriteLine($"No elements found that match '{xpath}'");
             }
         }
@@ -246,10 +256,21 @@ namespace Xml2OoXml
         {
             foreach (var xpath in _xpaths)
             {
-                var elements = doc.XPathSelectElements(xpath, _namespaceManager).Where(el => el != doc.Root);
+                var elements = doc.XPathSelectElements(xpath.Value, _namespaceManager).Where(el => el != doc.Root);
                 _xpathElements.AddRange(elements);
+                if (!String.IsNullOrEmpty(xpath.Selector))
+                {
+                    foreach (var element in elements)
+                    {
+                        var s = element.XPathEvaluate(xpath.Selector) as IEnumerable<object>;
+                        if (s?.FirstOrDefault() is XAttribute attribute)
+                        {
+                            _specialNames[element] = attribute.Value;
+                        }
+                    }
+                }
                 if (elements.Any())
-                    _usedXPaths.Add(xpath);
+                    _usedXPaths.Add(xpath.Value);
             }
         }
 

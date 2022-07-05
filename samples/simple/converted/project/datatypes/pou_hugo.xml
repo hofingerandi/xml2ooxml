@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <pou name="hugo" xmlns="http://www.plcopen.org/xml/tc6_0200">
   <interface>
-    <include ext="project\datatypes\pou_hugo\interface\include.txt"></include>
+    <include ext="project\datatypes\pou_hugo\interface\include_hugo.txt"></include>
   </interface>
   <implementation>
     <sourcecode>

@@ -15,6 +15,6 @@
 		<XPath>//plc:configuration</XPath>
 		<XPath>//plc:sourcecode/xhtml:xhtml</XPath>
 		<XPath>//plc:header</XPath>
-		<XPath>//plc:include</XPath>
+		<XPath selector="../../@name">//plc:include</XPath>
 	</XPathsToExternalize>
 </Configuration>
