@@ -8,9 +8,15 @@
       "commandName": "Project",
       "commandLineArgs": "--createsample test.xml"
     },
-    "convert document": {
+    "convert simple doc": {
       "commandName": "Project",
-      "commandLineArgs": "--config test.xml"
+      "commandLineArgs": "--config config.xml",
+      "workingDirectory": "..\\..\\samples\\simple"
+    },
+    "convert visuTest": {
+      "commandName": "Project",
+      "commandLineArgs": "--config config.xml",
+      "workingDirectory": "..\\..\\samples\\visuTest"
     }
   }
 }

@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP17 Patch 2" creationDateTime="2022-02-17T09:26:16.669529" />
+  <contentHeader name="VisuTest.project" modificationDateTime="2022-02-16T16:05:59.7420926">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="1" y="1" />
+      </fbd>
+      <ld>
+        <scaling x="1" y="1" />
+      </ld>
+      <sfc>
+        <scaling x="1" y="1" />
+      </sfc>
+    </coordinateInfo>
+    <addData>
+      <data name="http://www.3s-software.com/plcopenxml/projectinformation" handleUnknown="implementation">
+        <ProjectInformation />
+      </data>
+    </addData>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous />
+  </types>
+  <instances>
+    <configurations>
+      <configuration ext="project\configurations\configuration_Device" />
+    </configurations>
+  </instances>
+  <addData>
+    <data name="http://www.3s-software.com/plcopenxml/libraries" handleUnknown="implementation">
+      <Libraries>
+        <Library Name="#VisuSymbols" Namespace="VisuSymbols" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="false" LinkAllContent="false" DefaultResolution="VisuSymbols, 4.1.0.0 (System)" />
+        <Library Name="#System_VisuElems" Namespace="VisuElems" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElems, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="#System_VisuElemMeter" Namespace="VisuElemMeter" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemMeter, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="#System_VisuElemsSpecialControls" Namespace="VisuElemsSpecialControls" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemsSpecialControls, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="#System_VisuElemsWinControls" Namespace="VisuElemsWinControls" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemsWinControls, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="#System_VisuElemTextEditor" Namespace="VisuElemTextEditor" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemTextEditor, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="#System_VisuElemTrace" Namespace="VisuElemTrace" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemTrace, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="#System_VisuNativeControl" Namespace="VisuNativeControl" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuNativeControl, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="#System_VisuElemsAlarm" Namespace="VisuElemsAlarm" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemsAlarm, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="#System_VisuElemCamDisplayer" Namespace="VisuElemCamDisplayer" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemCamDisplayer, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae">
+          <Parameters>
+            <Parameter Name="GC_POINTS_PER_CAM" Value="100" />
+          </Parameters>
+        </Library>
+        <Library Name="#System_VisuElem3DPath" Namespace="VisuElem3DPath" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElem3DPath, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae">
+          <Parameters>
+            <Parameter Name="GC_POINTS_PER_POLYGON" Value="100" />
+          </Parameters>
+        </Library>
+        <Library Name="#System_VisuElemsDateTime" Namespace="VisuElemsDateTime" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemsDateTime, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="#System_VisuElemXYChart" Namespace="VisuElemXYChart" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemXYChart, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="#system_visuinputs" Namespace="visuinputs" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="visuinputs, 4.1.0.0 (system)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <addData>
+          <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+            <ObjectId>6d1860cb-a9a6-4c3c-88a8-c16d1b9dd0ee</ObjectId>
+          </data>
+        </addData>
+      </Libraries>
+    </data>
+    <data name="http://www.3s-software.com/plcopenxml/projectstructure" handleUnknown="discard">
+      <ProjectStructure>
+        <Object Name="Device" ObjectId="9268dd76-ab9d-4fa3-8a83-3128457193c3">
+          <Object Name="Application" ObjectId="8bfe4989-8abf-4356-9154-5ff294e85958">
+            <Object Name="Library Manager" ObjectId="86c27211-14b4-486e-aed7-1ca15e5ed50d" />
+            <Object Name="PLC_PRG" ObjectId="e110c2b7-37eb-4544-8236-1e7504c992cb" />
+            <Object Name="MainTask" ObjectId="94a0acc0-b064-436e-a813-0a9c5fbd49bb" />
+            <Object Name="VISU_TASK" ObjectId="6c3abf94-ccb3-4fa4-ad69-15d346e5407c" />
+            <Object Name="Task" ObjectId="85fba433-86d0-4a7a-8667-adf36d4f0e0e" />
+            <Object Name="DUT" ObjectId="656123b2-9e92-4c18-b0e7-a98a420f3d01" />
+            <Object Name="POU" ObjectId="1becbc49-35a1-477b-9514-0fbb05067cfa" />
+          </Object>
+        </Object>
+        <Object Name="Library Manager" ObjectId="6d1860cb-a9a6-4c3c-88a8-c16d1b9dd0ee" />
+      </ProjectStructure>
+    </data>
+  </addData>
+</project>

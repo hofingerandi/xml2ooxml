@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration name="Device" xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <resource name="Application">
+    <task name="MainTask" interval="PT0.02S" priority="1">
+      <pouInstance name="PLC_PRG" typeName="">
+        <documentation>
+          <xhtml xmlns="http://www.w3.org/1999/xhtml" />
+        </documentation>
+      </pouInstance>
+      <addData>
+        <data name="http://www.3s-software.com/plcopenxml/tasksettings" handleUnknown="implementation">
+          <TaskSettings KindOfTask="Cyclic" Interval="t#20ms" IntervalUnit="ms" WithinSPSTimeSlicing="true">
+            <Watchdog Enabled="false" TimeUnit="ms" Sensitivity="1" />
+          </TaskSettings>
+        </data>
+        <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+          <ObjectId>94a0acc0-b064-436e-a813-0a9c5fbd49bb</ObjectId>
+        </data>
+      </addData>
+    </task>
+    <task name="VISU_TASK" interval="PT0.1S" priority="31">
+      <pouInstance name="VisuElems.Visu_Prg" typeName="">
+        <documentation>
+          <xhtml xmlns="http://www.w3.org/1999/xhtml" />
+        </documentation>
+      </pouInstance>
+      <addData>
+        <data name="http://www.3s-software.com/plcopenxml/tasksettings" handleUnknown="implementation">
+          <TaskSettings KindOfTask="Cyclic" Interval="100" IntervalUnit="ms" WithinSPSTimeSlicing="true">
+            <Watchdog Enabled="false" TimeUnit="ms" />
+          </TaskSettings>
+        </data>
+        <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+          <ObjectId>6c3abf94-ccb3-4fa4-ad69-15d346e5407c</ObjectId>
+        </data>
+      </addData>
+    </task>
+    <task name="Task" interval="PT0.02S" priority="1">
+      <addData>
+        <data name="http://www.3s-software.com/plcopenxml/tasksettings" handleUnknown="implementation">
+          <TaskSettings KindOfTask="Cyclic" Interval="t#20ms" IntervalUnit="ms" WithinSPSTimeSlicing="true">
+            <Watchdog Enabled="false" TimeUnit="ms" Sensitivity="1" />
+          </TaskSettings>
+        </data>
+        <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+          <ObjectId>85fba433-86d0-4a7a-8667-adf36d4f0e0e</ObjectId>
+        </data>
+      </addData>
+    </task>
+    <addData>
+      <data name="http://www.3s-software.com/plcopenxml/datatype" handleUnknown="implementation">
+        <dataType name="DUT">
+          <baseType>
+            <struct />
+          </baseType>
+          <addData>
+            <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+              <ObjectId>656123b2-9e92-4c18-b0e7-a98a420f3d01</ObjectId>
+            </data>
+          </addData>
+        </dataType>
+      </data>
+      <data name="http://www.3s-software.com/plcopenxml/pou" handleUnknown="implementation">
+        <pou ext="project\configurations/configuration_Device\data_plc_pou\pou_PLC_PRG" />
+      </data>
+      <data name="http://www.3s-software.com/plcopenxml/pou" handleUnknown="implementation">
+        <pou ext="project\configurations/configuration_Device\data_plc_pou\pou_POU" />
+      </data>
+      <data name="http://www.3s-software.com/plcopenxml/libraries" handleUnknown="implementation">
+        <Libraries>
+          <Library Name="#IoStandard" Namespace="IoStandard" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="true" DefaultResolution="IoStandard, 3.5.17.0 (System)" />
+          <Library Name="#3SLicense" Namespace="_3S_LICENSE" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="3SLicense, 0.0.0.0 (3S - Smart Software Solutions GmbH)" ResolverGuid="97c3b452-d9fa-4ac2-9d0c-3d420aa6d95b" />
+          <Library Name="#CAA Device Diagnosis" Namespace="DED" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="CAA Device Diagnosis, 3.5.17.0 (CAA Technical Workgroup)" />
+          <Library Name="#Standard" Namespace="Standard" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="false" LinkAllContent="false" DefaultResolution="Standard, * (System)" />
+          <Library Name="#BreakpointLogging" Namespace="BPLog" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="Breakpoint Logging Functions, 3.5.5.0 (3S - Smart Software Solutions GmbH)" />
+          <Library Name="#System_VisuElems" Namespace="VisuElems" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElems, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+          <Library Name="#System_VisuElemMeter" Namespace="VisuElemMeter" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemMeter, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+          <Library Name="#System_VisuElemsSpecialControls" Namespace="VisuElemsSpecialControls" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemsSpecialControls, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+          <Library Name="#System_VisuElemsWinControls" Namespace="VisuElemsWinControls" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemsWinControls, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+          <Library Name="#System_VisuElemTextEditor" Namespace="VisuElemTextEditor" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemTextEditor, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+          <Library Name="#System_VisuElemTrace" Namespace="VisuElemTrace" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemTrace, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+          <Library Name="#System_VisuNativeControl" Namespace="VisuNativeControl" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuNativeControl, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+          <Library Name="#System_VisuElemsAlarm" Namespace="VisuElemsAlarm" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemsAlarm, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+          <Library Name="#System_VisuElemCamDisplayer" Namespace="VisuElemCamDisplayer" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemCamDisplayer, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae">
+            <Parameters>
+              <Parameter Name="GC_POINTS_PER_CAM" Value="100" />
+            </Parameters>
+          </Library>
+          <Library Name="#System_VisuElem3DPath" Namespace="VisuElem3DPath" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElem3DPath, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae">
+            <Parameters>
+              <Parameter Name="GC_POINTS_PER_POLYGON" Value="100" />
+            </Parameters>
+          </Library>
+          <Library Name="#System_VisuElemsDateTime" Namespace="VisuElemsDateTime" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemsDateTime, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+          <Library Name="#System_VisuElemXYChart" Namespace="VisuElemXYChart" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemXYChart, 4.1.0.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+          <Library Name="#system_visuinputs" Namespace="visuinputs" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="visuinputs, 4.1.0.0 (system)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+          <addData>
+            <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+              <ObjectId>86c27211-14b4-486e-aed7-1ca15e5ed50d</ObjectId>
+            </data>
+          </addData>
+        </Libraries>
+      </data>
+      <data name="http://www.3s-software.com/plcopenxml/buildproperties" handleUnknown="implementation">
+        <BuildProperties>
+          <CompilerDefines>GENERATE_OVERLAY_VISU</CompilerDefines>
+        </BuildProperties>
+      </data>
+      <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+        <ObjectId>8bfe4989-8abf-4356-9154-5ff294e85958</ObjectId>
+      </data>
+    </addData>
+  </resource>
+  <addData>
+    <data name="Device" handleUnknown="discard">
+      <Device xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="">
+        <DeviceType>
+          <DeviceIdentification>
+            <Type>4097</Type>
+            <Id>0000 000a</Id>
+            <Version>3.5.17.20</Version>
+          </DeviceIdentification>
+          <Connector moduleType="256" interface="Common.PCI" connectorId="0">
+            <HostParameterSet />
+          </Connector>
+          <Connector moduleType="769" interface="SafetyInterface" connectorId="1">
+            <HostParameterSet />
+          </Connector>
+          <DeviceParameterSet />
+        </DeviceType>
+      </Device>
+    </data>
+    <data name="configurations" handleUnknown="discard">
+      <configurations />
+    </data>
+    <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+      <ObjectId>9268dd76-ab9d-4fa3-8a83-3128457193c3</ObjectId>
+    </data>
+  </addData>
+</configuration>
