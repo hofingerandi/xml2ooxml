@@ -1,0 +1,11 @@
+﻿* no attributes + no content (or just ns-attribute) => store content as single file
+* maxdepth -> config
+* unittests
+* store sample.xml/out in separate folder (demo?), outside of project
+* avoid folder structure, when there is only a single subfolder?
+* better names for files, without extracting the whole hierarchy
+	extract "content" from this snippet
+	<main><foo name="good-name"><bar><baz>content</...>
+	currently, you must extract //foo and //baz; then you get /good-name/baz/baz.xml
+	if you directly extract //foo/bar/baz you will get /baz/baz.xml without good-name
+	=> it would be cool, to have a configurable method for creating names (e.g. extract //foo/bar/baz but take //foo@name as name)
