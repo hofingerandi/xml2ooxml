@@ -31,7 +31,7 @@
   </interface>
   <body>
     <ST>
-      <xhtml xmlns="http://www.w3.org/1999/xhtml" ext="project\configurations\configuration_Device\data_plc_pou\pou_PLC_PRG\ST\xhtml.txt"></xhtml>
+      <xhtml xmlns="http://www.w3.org/1999/xhtml" ext="project\configurations\configuration_Device\data_plc_pou\pou_PLC_PRG\ST\xhtml_PLC_PRG.txt"></xhtml>
     </ST>
   </body>
   <addData>

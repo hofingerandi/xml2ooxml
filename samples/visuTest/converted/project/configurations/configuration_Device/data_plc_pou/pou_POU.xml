@@ -11,7 +11,7 @@
   </interface>
   <body>
     <ST>
-      <xhtml xmlns="http://www.w3.org/1999/xhtml" ext="project\configurations\configuration_Device\data_plc_pou\pou_POU\ST\xhtml.txt"></xhtml>
+      <xhtml xmlns="http://www.w3.org/1999/xhtml" ext="project\configurations\configuration_Device\data_plc_pou\pou_POU\ST\xhtml_POU.txt"></xhtml>
     </ST>
   </body>
   <addData>
