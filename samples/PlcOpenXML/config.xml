@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <MaxDepth>15</MaxDepth>
+  <DocumentPath>Firmware-PLC-sub.xml</DocumentPath>
+  <TargetFolder>converted</TargetFolder>
+  <NamespaceEntries>
+    <XmlNamespaceEntry Abbreviation="plc" Namespace="http://www.plcopen.org/xml/tc6_0200" />
+    <XmlNamespaceEntry Abbreviation="xhtml" Namespace="http://www.w3.org/1999/xhtml" />
+  </NamespaceEntries>
+  <NameReplacements>
+    <NameReplacement FullName="http://www.3s-software.com/plcopenxml/" Abbreviation="plc_" />
+  </NameReplacements>
+  <XPathsToExternalize>
+    <XPath>//plc:pou</XPath>
+    <XPath>//plc:configuration</XPath>
+    <XPath selector="../../../@name">//plc:pou/plc:body/plc:ST/xhtml:xhtml</XPath>
+    <XPath selector="../../../@name">//plc:actions/plc:action/plc:body/plc:ST/xhtml:xhtml</XPath>
+  </XPathsToExternalize>
+</Configuration>
