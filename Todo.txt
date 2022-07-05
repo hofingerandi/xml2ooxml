@@ -1,6 +1,4 @@
-﻿* no attributes + no content (or just ns-attribute) => store content as single file
-* unittests
-* store sample.xml/out in separate folder (demo?), outside of project
+﻿* unittests
 * avoid folder structure, when there is only a single subfolder?
 * better names for files, without extracting the whole hierarchy
 	extract "content" from this snippet

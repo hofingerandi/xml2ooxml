@@ -61,10 +61,10 @@
         </dataType>
       </data>
       <data name="http://www.3s-software.com/plcopenxml/pou" handleUnknown="implementation">
-        <pou ext="project\configurations/configuration_Device\data_plc_pou\pou_PLC_PRG" />
+        <pou ext="project\configurations\configuration_Device\data_plc_pou\pou_PLC_PRG.xml" />
       </data>
       <data name="http://www.3s-software.com/plcopenxml/pou" handleUnknown="implementation">
-        <pou ext="project\configurations/configuration_Device\data_plc_pou\pou_POU" />
+        <pou ext="project\configurations\configuration_Device\data_plc_pou\pou_POU.xml" />
       </data>
       <data name="http://www.3s-software.com/plcopenxml/libraries" handleUnknown="implementation">
         <Libraries>

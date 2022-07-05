@@ -15,6 +15,8 @@ namespace Xml2OoXml
         public string FileName { get; internal set; }
         public string FullFilename { get; internal set; }
         public XElement OrigElement { get; internal set; }
+        public string Content { get; internal set; }
+        public string Extension => Document == null ? ".txt" : ".xml";
     }
 }
 

@@ -1,0 +1,9 @@
+ButtonTrigger(CLK:= ButtonPressed, Q=> );
+IF (ButtonTrigger.Q) THEN
+	Counter := Counter + 1;
+END_IF
+
+ResetTrigger(CLK:= ResetPressed, Q=> );
+IF (ResetTrigger.Q) THEN
+	Counter := 0;
+END_IF

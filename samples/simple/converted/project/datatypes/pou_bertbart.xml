@@ -2,6 +2,8 @@
 <pou name="bert/bart" xmlns="http://www.plcopen.org/xml/tc6_0200">
   <interface></interface>
   <implementation>
-    <sourcecode ext="project\datatypes/pou_bertbart\implementation\sourcecode" />
+    <sourcecode>
+      <header ext="project\datatypes\pou_bertbart\sourcecode\header.txt"></header>
+    </sourcecode>
   </implementation>
 </pou>

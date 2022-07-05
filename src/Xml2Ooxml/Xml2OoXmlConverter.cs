@@ -9,7 +9,6 @@ using System.Xml.XPath;
 
 namespace Xml2OoXml
 {
-    // TODO: store content of elements without attributes directly, not as xml?
     class Xml2OoXmlConverter
     {
         List<string> _xpaths = new();
@@ -73,7 +72,7 @@ namespace Xml2OoXml
         {
             foreach (var docToStore in _docsToStore)
             {
-                docToStore.OrigElement?.SetAttributeValue("ext", docToStore.FullFilename);
+                docToStore.OrigElement?.SetAttributeValue("ext", docToStore.FullFilename + docToStore.Extension);
             }
         }
 
@@ -92,7 +91,14 @@ namespace Xml2OoXml
                 if (docToStore.ParentElement != null)
                 {
                     Debug.Assert(docToStore.ParentDoc != null);
-                    docToStore.FileName = GetValidFilename(docToStore.Document.Root);
+                    if (docToStore.Document != null)
+                    {
+                        docToStore.FileName = GetValidFilename(docToStore.Document.Root);
+                    }
+                    else
+                    {
+                        docToStore.FileName = GetValidFilename(docToStore.OrigElement);
+                    }
                 }
                 else
                 {
@@ -120,7 +126,7 @@ namespace Xml2OoXml
                 var parent = docToStore;
                 while (parent.ParentDoc?.LocalFolder != null)
                 {
-                    folder = parent.ParentDoc.LocalFolder + "/" + folder;
+                    folder = Path.Combine(parent.ParentDoc.LocalFolder, folder);
                     parent = parent.ParentDoc;
                 }
                 docToStore.FullFolder = folder;
@@ -173,9 +179,17 @@ namespace Xml2OoXml
         {
             foreach (var doc in _docsToStore)
             {
-                var fullFilename = Path.Combine(targetFolder.FullName, doc.FullFilename + ".xml");
+                var fullFilename = Path.Combine(targetFolder.FullName, doc.FullFilename + doc.Extension);
                 Console.WriteLine(fullFilename);
-                doc.Document.Save(fullFilename);
+                if (doc.Document != null)
+                {
+                    doc.Document.Save(fullFilename);
+                }
+                else
+                {
+                    Debug.Assert(doc.Content != null);
+                    File.WriteAllText(fullFilename, doc.Content);
+                }
             }
         }
 
@@ -227,7 +241,7 @@ namespace Xml2OoXml
             {
                 var elements = doc.XPathSelectElements(xpath, _namespaceManager).Where(el => el != doc.Root);
                 _xpathElements.AddRange(elements);
-                if (elements.Count() != 0)
+                if (elements.Any())
                     _usedXPaths.Add(xpath);
             }
         }
@@ -240,13 +254,12 @@ namespace Xml2OoXml
             if (depth > MaxDepth)
                 return;
 
-            if (ShouldExternalize(element, depth))
+            if (ShouldExternalize(element))
             {
                 Externalize(docToParse, element);
                 return;
             }
 
-            //Debug.WriteLine($"{new String('-', depth)}{element.Name.LocalName}");
             foreach (var node in element.Elements())
             {
                 ParseRecursively(docToParse, node, depth + 1);
@@ -256,15 +269,39 @@ namespace Xml2OoXml
         private void Externalize(DocToParse docToParse, XElement element)
         {
             Debug.WriteLine($"Externalizing {element.Name.LocalName}");
-            // TODO: if this element has not attributes, and no subelements, just store the content (without xml-escaping)
-            // TODO: use different filename (.txt, .content vs. .xml)
-            var newDoc = new XDocument(new XElement(element));
-            _docsToParse.Add(new DocToParse() { Document = newDoc, OrigElement = element, ParentDoc = docToParse, ParentElement = element.Parent });
-            element.RemoveNodes();
-            element.RemoveAttributes();
+            if (IsContentOnlyElement(element))
+            {
+                // content is stored directly
+                _docsToStore.Add(new DocToParse() { Document = null, OrigElement = element, ParentDoc = docToParse, ParentElement = element.Parent, Content = element.Value });
+                element.SetValue(String.Empty);
+            }
+            else
+            {
+                // element is externalized; new document parsed recursively
+                var newDoc = new XDocument(new XElement(element));
+                _docsToParse.Add(new DocToParse() { Document = newDoc, OrigElement = element, ParentDoc = docToParse, ParentElement = element.Parent });
+                element.RemoveNodes();
+                element.RemoveAttributes();
+            }
         }
 
-        public bool ShouldExternalize(XElement element, int depth)
+        // An element that only consists of content
+        private static bool IsContentOnlyElement(XElement element)
+        {
+            if (element.HasElements)
+                return false;
+
+            if (!element.HasAttributes)
+                return true;
+
+            if (element.Attributes().Count() == 1 && element.FirstAttribute.IsNamespaceDeclaration)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool ShouldExternalize(XElement element)
         {
             if (element == null)
                 return false;

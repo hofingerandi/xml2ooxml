@@ -13,7 +13,7 @@
   <XPathsToExternalize>
     <XPath>//plc:pou</XPath>
     <XPath>//plc:configuration</XPath>
-    <XPath>//plc:sourcecode</XPath>
+    <XPath>//plc:body/plc:ST/xhtml:xhtml</XPath>
     <XPath>//plc:include</XPath>
   </XPathsToExternalize>
 </Configuration>
