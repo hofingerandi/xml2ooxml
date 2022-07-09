@@ -6,6 +6,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Xml2Ooxml;
 using Xml2Ooxml.Config;
 
 namespace Xml2OoXml
@@ -17,8 +18,7 @@ namespace Xml2OoXml
         List<XElement> _xpathElements = new();
         List<DocToParse> _docsToParse = new();
         List<DocToParse> _docsToStore = new();
-        List<Tuple<string, string>> _nameReplacements = new();
-        Dictionary<XElement, string> _specialNames = new();
+        NameHandling _nameHandling = new ();
 
         public int MaxDepth { get; set; }
 
@@ -31,7 +31,7 @@ namespace Xml2OoXml
 
         internal void RegisterNameReplacement(string replace, string with)
         {
-            _nameReplacements.Add(Tuple.Create(replace, with));
+            _nameHandling.RegisterNameReplacement(replace, with);
         }
 
         public void RegisterTypeForExternalization(XPathEntry xpath)
@@ -204,44 +204,9 @@ namespace Xml2OoXml
 
         private string GetValidFilename(XElement xElement)
         {
-            string result;
-            string specialName = null;
-            if (_specialNames.TryGetValue(xElement, out specialName))
-            {
-            }
-            else
-            {
-                var nameAttr = xElement.Attribute("name");
-                specialName = nameAttr?.Value;
-            }
-
-            if (!String.IsNullOrEmpty(specialName))
-            {
-                foreach (var item in _nameReplacements)
-                {
-                    specialName = specialName.Replace(item.Item1, item.Item2);
-                }
-                result = xElement.Name.LocalName + "_" + specialName;
-            }
-            else
-            {
-                result = xElement.Name.LocalName;
-            }
-            return MakeValidFileName(result);
+            return _nameHandling.GetValidFileName(xElement);
         }
 
-        /// <summary>
-        /// https://stackoverflow.com/a/847251/821134
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        private static string MakeValidFileName(string name)
-        {
-            string invalidChars = System.Text.RegularExpressions.Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars()));
-            string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
-
-            return System.Text.RegularExpressions.Regex.Replace(name, invalidRegStr, "");
-        }
 
         private void LogUnusedXPaths()
         {
@@ -262,11 +227,7 @@ namespace Xml2OoXml
                 {
                     foreach (var element in elements)
                     {
-                        var s = element.XPathEvaluate(xpath.Selector) as IEnumerable<object>;
-                        if (s?.FirstOrDefault() is XAttribute attribute)
-                        {
-                            _specialNames[element] = attribute.Value;
-                        }
+                        _nameHandling.IdentifySpecialName(element, xpath.Selector);
                     }
                 }
                 if (elements.Any())
@@ -306,7 +267,9 @@ namespace Xml2OoXml
             else
             {
                 // element is externalized; new document parsed recursively
-                var newDoc = new XDocument(new XElement(element));
+                var newElement = new XElement(element);
+                var newDoc = new XDocument(newElement);
+                _nameHandling.RegisterRelatedElement(element, newElement);
                 _docsToParse.Add(new DocToParse() { Document = newDoc, OrigElement = element, ParentDoc = docToParse, ParentElement = element.Parent });
                 element.RemoveNodes();
                 element.RemoveAttributes();
