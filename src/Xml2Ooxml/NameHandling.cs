@@ -18,10 +18,20 @@ namespace Xml2Ooxml
         /// <param name="selector"></param>
         public void IdentifySpecialName(XElement element, string selector)
         {
-            var s = element.XPathEvaluate(selector) as IEnumerable<object>;
-            if (s?.FirstOrDefault() is XAttribute attribute)
+            if (String.IsNullOrEmpty(selector))
+                return;
+
+            var xpe = element.XPathEvaluate(selector);
+            if (xpe is IEnumerable<object> ieo)
             {
-                _specialNames[element] = attribute.Value;
+                if (ieo?.FirstOrDefault() is XAttribute attribute)
+                {
+                    _specialNames[element] = attribute.Value;
+                }
+            }
+            else if (xpe is string s)
+            {
+                _specialNames[element] = s;
             }
         }
 

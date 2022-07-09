@@ -51,5 +51,40 @@ namespace Xml2Ooxml.Tests
             var fn = target.GetValidFileName(element);
             Assert.AreEqual("MyElement_UrlNs_MyAttribute", fn);
         }
+
+        [TestMethod()]
+        public void Element_WithSpecialAttr()
+        {
+            var element = new XElement(XName.Get("MyElement", "MyNamespace"));
+            element.SetAttributeValue("kind", "BeSoKind");
+            var target = new NameHandling();
+            target.IdentifySpecialName(element, "@kind");
+            var fn = target.GetValidFileName(element);
+            Assert.AreEqual("MyElement_BeSoKind", fn);
+        }
+
+        [TestMethod()]
+        public void Element_ComplexXpath()
+        {
+            var element = new XElement(XName.Get("MyElement", "MyNamespace"));
+            element.SetAttributeValue("kind", "Be");
+            element.SetAttributeValue("name", "SoKind");
+            var target = new NameHandling();
+            target.IdentifySpecialName(element, "concat(@kind,@name)");
+            var fn = target.GetValidFileName(element);
+            Assert.AreEqual("MyElement_BeSoKind", fn);
+        }
+
+        [TestMethod()]
+        public void Element_ComplexXpath2()
+        {
+            var element = new XElement(XName.Get("MyElement", "MyNamespace"));
+            element.SetAttributeValue("kind", "Be");
+            element.SetAttributeValue("name", "SoKind");
+            var target = new NameHandling();
+            target.IdentifySpecialName(element, @"concat('-',name(),'-',@kind,'-',@name)");
+            var fn = target.GetValidFileName(element);
+            Assert.AreEqual("MyElement_-MyElement-Be-SoKind", fn);
+        }
     }
 }
