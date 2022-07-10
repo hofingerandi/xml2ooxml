@@ -1,3 +1,7 @@
-﻿* unittests
+﻿* documentation for xpath
+  * links to xpath-cheatsheet / xpath online testers
+  * some samples for xpaths-possibilities / refer to unittests
+
+* unittests for folder structure
 * avoid folder structure, when there is only a single subfolder?
 
