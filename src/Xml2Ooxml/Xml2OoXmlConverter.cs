@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Xml.Linq;
-using System.Xml.XPath;
 using Xml2Ooxml;
 using Xml2Ooxml.Config;
 
@@ -14,22 +12,20 @@ namespace Xml2OoXml
     class Xml2OoXmlConverter
     {
         List<XPathEntry> _xpaths = new();
-        HashSet<string> _usedXPaths = new();
-        List<XElement> _xpathElements = new();
         List<DocToParse> _docsToParse = new();
         List<DocToParse> _docsToStore = new();
-        NameHandling _nameHandling = new ();
+        Externalizer _externalizer = new();
+        NameHandling _nameHandling = new();
 
         public int MaxDepth { get; set; }
 
         public void RegisterNamespace(string prefix, string xmlNamespace)
         {
-            _namespaceManager.AddNamespace(prefix, xmlNamespace);
+            _externalizer.RegisterNamespace(prefix, xmlNamespace);
+            _nameHandling.RegisterNamespace(prefix, xmlNamespace);
         }
 
-        XmlNamespaceManager _namespaceManager = new XmlNamespaceManager(new NameTable());
-
-        internal void RegisterNameReplacement(string replace, string with)
+        public void RegisterNameReplacement(string replace, string with)
         {
             _nameHandling.RegisterNameReplacement(replace, with);
         }
@@ -57,7 +53,10 @@ namespace Xml2OoXml
             }
             while (true);
 
-            LogUnusedXPaths();
+            foreach (var path in _externalizer.GetUnusedXPaths())
+            {
+                Console.WriteLine($"Path {path} was not used during externalization");
+            }
 
             CreateFileAndFoldernames();
 
@@ -207,31 +206,12 @@ namespace Xml2OoXml
             return _nameHandling.GetValidFileName(xElement);
         }
 
-
-        private void LogUnusedXPaths()
-        {
-            foreach (var xpath in _xpaths)
-            {
-                if (!_usedXPaths.Contains(xpath.Value))
-                    Console.WriteLine($"No elements found that match '{xpath}'");
-            }
-        }
-
         private void FindElementsFromXPath(XDocument doc)
         {
             foreach (var xpath in _xpaths)
             {
-                var elements = doc.XPathSelectElements(xpath.Value, _namespaceManager).Where(el => el != doc.Root);
-                _xpathElements.AddRange(elements);
-                if (!String.IsNullOrEmpty(xpath.Selector))
-                {
-                    foreach (var element in elements)
-                    {
-                        _nameHandling.IdentifySpecialName(element, xpath.Selector);
-                    }
-                }
-                if (elements.Any())
-                    _usedXPaths.Add(xpath.Value);
+                var elements = _externalizer.RegisterElementsFromXPath(doc, xpath.Value);
+                _nameHandling.FindSpecialNames(elements, xpath.Selector);
             }
         }
 
@@ -243,7 +223,7 @@ namespace Xml2OoXml
             if (depth > MaxDepth)
                 return;
 
-            if (ShouldExternalize(element))
+            if (_externalizer.ShouldExternalize(element))
             {
                 Externalize(docToParse, element);
                 return;
@@ -289,17 +269,6 @@ namespace Xml2OoXml
             {
                 return true;
             }
-            return false;
-        }
-
-        public bool ShouldExternalize(XElement element)
-        {
-            if (element == null)
-                return false;
-
-            if (_xpathElements.Contains(element))
-                return true;
-
             return false;
         }
     }

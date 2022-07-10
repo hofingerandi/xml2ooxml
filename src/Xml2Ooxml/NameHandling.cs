@@ -1,27 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
 namespace Xml2Ooxml
 {
+    /// <summary>
+    /// Find good names for XElements
+    /// </summary>
     public class NameHandling
     {
         Dictionary<XElement, string> _specialNames = new();
         List<Tuple<string, string>> _nameReplacements = new();
+        XmlNamespaceManager _namespaceManager = new XmlNamespaceManager(new NameTable());
+
+        /// <summary>
+        /// Enable namespaces in xpath-selectors
+        /// </summary>
+        /// <param name="prefix"></param>
+        /// <param name="xmlNamespace"></param>
+        public void RegisterNamespace(string prefix, string xmlNamespace)
+        {
+            _namespaceManager.AddNamespace(prefix, xmlNamespace);
+        }
+
+
+        /// <summary>
+        /// Some auto-generated names might contain clumsy substrings, e.g. urls.
+        /// </summary>
+        /// <param name="replace"></param>
+        /// <param name="with"></param>
+        public void RegisterNameReplacement(string replace, string with)
+        {
+            _nameReplacements.Add(Tuple.Create(replace, with));
+        }
+
+        public void FindSpecialNames(IEnumerable<XElement> elements, string selector)
+        {
+            if (String.IsNullOrEmpty(selector))
+                return;
+
+            foreach (var element in elements)
+            {
+                FindSpecialName(element, selector);
+            }
+        }
 
         /// <summary>
         /// Use the selector to determine a meaningful special name
         /// </summary>
         /// <param name="element"></param>
         /// <param name="selector"></param>
-        public void IdentifySpecialName(XElement element, string selector)
+        public void FindSpecialName(XElement element, string selector)
         {
             if (String.IsNullOrEmpty(selector))
                 return;
 
-            var xpe = element.XPathEvaluate(selector);
+            var xpe = element.XPathEvaluate(selector, _namespaceManager);
             if (xpe is IEnumerable<object> ieo)
             {
                 if (ieo?.FirstOrDefault() is XAttribute attribute)
@@ -33,16 +70,6 @@ namespace Xml2Ooxml
             {
                 _specialNames[element] = s;
             }
-        }
-
-        /// <summary>
-        /// Some auto-generated names might contain clumsy substrings, e.g. urls.
-        /// </summary>
-        /// <param name="replace"></param>
-        /// <param name="with"></param>
-        public void RegisterNameReplacement(string replace, string with)
-        {
-            _nameReplacements.Add(Tuple.Create(replace, with));
         }
 
         /// <summary>

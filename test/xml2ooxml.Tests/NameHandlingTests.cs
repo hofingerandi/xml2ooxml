@@ -58,7 +58,7 @@ namespace Xml2Ooxml.Tests
             var element = new XElement(XName.Get("MyElement", "MyNamespace"));
             element.SetAttributeValue("kind", "BeSoKind");
             var target = new NameHandling();
-            target.IdentifySpecialName(element, "@kind");
+            target.FindSpecialName(element, "@kind");
             var fn = target.GetValidFileName(element);
             Assert.AreEqual("MyElement_BeSoKind", fn);
         }
@@ -70,7 +70,7 @@ namespace Xml2Ooxml.Tests
             element.SetAttributeValue("kind", "Be");
             element.SetAttributeValue("name", "SoKind");
             var target = new NameHandling();
-            target.IdentifySpecialName(element, "concat(@kind,@name)");
+            target.FindSpecialName(element, "concat(@kind,@name)");
             var fn = target.GetValidFileName(element);
             Assert.AreEqual("MyElement_BeSoKind", fn);
         }
@@ -82,7 +82,7 @@ namespace Xml2Ooxml.Tests
             element.SetAttributeValue("kind", "Be");
             element.SetAttributeValue("name", "SoKind");
             var target = new NameHandling();
-            target.IdentifySpecialName(element, @"concat('-',name(),'-',@kind,'-',@name)");
+            target.FindSpecialName(element, @"concat('-',name(),'-',@kind,'-',@name)");
             var fn = target.GetValidFileName(element);
             Assert.AreEqual("MyElement_-MyElement-Be-SoKind", fn);
         }
