@@ -18,6 +18,11 @@ namespace Xml2OoXml
         NameHandling _nameHandling = new();
 
         public int MaxDepth { get; set; }
+        public bool LocalNameAsPrefix
+        {
+            get => _nameHandling.UseLocalNameAsPrefix;
+            set => _nameHandling.UseLocalNameAsPrefix = value;
+        }
 
         public void RegisterNamespace(string prefix, string xmlNamespace)
         {

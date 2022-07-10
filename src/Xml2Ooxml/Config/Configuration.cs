@@ -14,9 +14,11 @@ namespace Xml2Ooxml.Config
             XPathsToExternalize = new();
             DocumentPath = "";
             MaxDepth = 10;
+            LocalNameAsPrefix = true;
         }
 
         public int MaxDepth { get; set; }
+        public bool LocalNameAsPrefix { get; set; }
         public string DocumentPath { get; set; }
         public string TargetFolder { get; set; }
         public List<XmlNamespaceEntry> NamespaceEntries { get; set; }

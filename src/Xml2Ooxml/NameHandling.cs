@@ -16,6 +16,8 @@ namespace Xml2Ooxml
         List<Tuple<string, string>> _nameReplacements = new();
         XmlNamespaceManager _namespaceManager = new XmlNamespaceManager(new NameTable());
 
+        public bool UseLocalNameAsPrefix { get; set; } = true;
+
         /// <summary>
         /// Enable namespaces in xpath-selectors
         /// </summary>
@@ -98,7 +100,14 @@ namespace Xml2Ooxml
 
             if (!String.IsNullOrEmpty(specialName))
             {
-                result = xElement.Name.LocalName + "_" + specialName;
+                if (UseLocalNameAsPrefix)
+                {
+                    result = xElement.Name.LocalName + "_" + specialName;
+                }
+                else
+                {
+                    result = specialName;
+                }
             }
             else
             {

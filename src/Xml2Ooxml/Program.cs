@@ -37,6 +37,7 @@ namespace Xml2OoXml
             try
             {
                 var converter = new Xml2OoXmlConverter();
+                converter.LocalNameAsPrefix = config.LocalNameAsPrefix;
                 foreach (var ns in config.NamespaceEntries)
                 {
                     converter.RegisterNamespace(ns.Abbreviation, ns.Namespace);
