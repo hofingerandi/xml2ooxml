@@ -17,7 +17,7 @@ namespace Xml2OoXml
             }
             else
             {
-                Console.Error.WriteLine("Error parsing command line {0}", args);
+                Console.Error.WriteLine($"Error parsing command line {args}");
                 Console.WriteLine("Options:");
                 Console.WriteLine("     --config <configFile.xml>");
                 Console.WriteLine("     --createsample <configFile.xml>");
